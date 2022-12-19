@@ -1,0 +1,34 @@
+#!/bin/sh
+# kFreeBSD do not accept scripts as interpreters, using #!/bin/sh and sourcing.
+if [ true != "$INIT_D_SCRIPT_SOURCED" ] ; then
+    set "$0" "$@"; INIT_D_SCRIPT_SOURCED=true . /lib/init/init-d-script
+fi
+### BEGIN INIT INFO
+# Provides:          snapcloud
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: SnapCloud initscript
+# Description:       Starts the SnapCloud service as user "cloud"
+### END INIT INFO
+
+# Author: Bernat Romagosa <bernat@romagosa.work>
+
+NAME=snapcloud
+DESC="SnapCloud service"
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+
+case "$1" in
+  start|restart|reload|force-reload)
+    log_daemon_msg "Starting $DESC" "$NAME"
+    killall nginx
+    runuser -l cloud -c "(cd /home/cloud/snapCloud; ./start.sh &)"
+    ;;
+  stop)
+    log_daemon_msg "Stopping $DESC" "$NAME"
+    runuser -l cloud -c "lapis term"
+    killall nginx
+    ;;
+esac
+
