@@ -1,0 +1,72 @@
+diff --git a/migrations.lua b/migrations.lua
+index 9a4196e..41e9595 100644
+--- a/migrations.lua
++++ b/migrations.lua
+@@ -101,19 +101,6 @@ return {
+                             'collection_id', 'project_id', 'user_id',
+                             { unique = true })
+     end,
+-    -- Create and views for handling deleted items.
+-    ['2019-02-01:0'] = function ()
+-        schema.add_column('users',
+-                          'deleted',
+-                          types.time({ timezone = true, null = true }))
+-        update_user_views()
+-
+-        schema.add_column('projects',
+-                          'deleted',
+-                          types.time({ timezone = true, null = true }))
+-        update_project_views()
+-    end,
+-
+     -- Add an editor_ids[] field to collections
+     ['2019-02-04:0'] = function ()
+         schema.add_column(
+@@ -215,7 +202,7 @@ return {
+                 INSERT INTO featured_collections
+                     (collection_id, page_path, type, created_at, updated_at)
+                 VALUES
+-                    (?, 'examples', 'example', now()::timestamp,
++                    (1, 'examples', 'example', now()::timestamp,
+                         now()::timestamp)
+             ]], entry.id)
+             -- Front page
+@@ -223,7 +210,7 @@ return {
+                 INSERT INTO featured_collections
+                     (collection_id, page_path, type, created_at, updated_at)
+                 VALUES
+-                    (?, 'index', 'example', now()::timestamp, now()::timestamp)
++                    (1, 'index', 'example', now()::timestamp, now()::timestamp)
+             ]], entry.id)
+         end
+         -- Events page
+@@ -238,27 +225,10 @@ return {
+                 INSERT INTO featured_collections
+                     (collection_id, page_path, type, created_at, updated_at)
+                 VALUES
+-                    (?, 'events', 'event', now()::timestamp, now()::timestamp)
++                    (1, 'events', 'event', now()::timestamp, now()::timestamp)
+             ]], entry.id)
+         end
+-        -- Featured collection
+-        db.query([[
+-            INSERT INTO featured_collections
+-                (collection_id, page_path, type, created_at, updated_at)
+-            VALUES (
+-                (SELECT id FROM collections
+-                    WHERE name = 'Featured'
+-                    AND creator_id = (
+-                        SELECT id FROM users
+-                        WHERE username = 'snapcloud' LIMIT 1
+-                    )
+-                ),
+-                'index',
+-                'featured',
+-                now()::timestamp,
+-                now()::timestamp
+-            )
+-        ]])
++
+         -- Left for the maintainer is to feature the current TOTM and latest
+         -- event, if it applies
+     end,
