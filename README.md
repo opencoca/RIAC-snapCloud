@@ -1,4 +1,5 @@
 # RIAC-snapCloud
+
 RIAC-snapCloud Docker image is a self-contained package that includes all the components for running snapCloud within a Docker container. This allows for easy deployment and consistent operation across different environments. Pull the image from the Docker registry and run it to get started with snap Cloud.
 
 To run this locally use the command:
