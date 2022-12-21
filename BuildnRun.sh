@@ -39,8 +39,5 @@ docker tag openco/$PROJECT-$BRANCH:$TAG \
   && \
   #Run.sh
   docker run \
-    -p 8888:8888 \
-    -p 8080:8080 \
-    -p:443:443 \
-    -p 80:80 \
+    -p 8080 \
     -it openco/$PROJECT-$BRANCH:latest
