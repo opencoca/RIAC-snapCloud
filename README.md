@@ -6,7 +6,7 @@ To run this locally use the command:
 
     docker run -it -p 8080:8080 openco/riac-snapcloud-master
 
-Static pages:
+### Static pages:
 
 ```
     /about /bjc /coach's /contact  /credits  /DMCA /extensions
@@ -14,7 +14,7 @@ Static pages:
     /research /snapinator /snappy /source /tos
 ```
 
-Simple pages:
+### Simple pages:
 
 ```
     /blog /change_email /change_password /delete_user /forgot_password
