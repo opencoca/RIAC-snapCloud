@@ -68,12 +68,11 @@ RUN patch migrations.lua < migrations.patch
 RUN service postgresql start \
   && su - cloud -c "cd /app && ./bin/migrations.sh"
 
-
 # env file for snap cloud
 COPY env.sh /app/.env
 # start script
 copy start.sh /app/start.sh
 
-
+EXPOSE 8080
 
 CMD ["/app/start.sh"]
