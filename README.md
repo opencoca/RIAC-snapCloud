@@ -3,7 +3,7 @@ RIAC-snapCloud Docker image is a self-contained package that includes all the co
 
 To run this locally use the command:
 
-    `docker run -it -p 8080:8080 openco/riac-snapcloud-master`
+    docker run -it -p 8080:8080 openco/riac-snapcloud-master
 
 Static pages:
 
