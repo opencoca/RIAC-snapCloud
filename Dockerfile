@@ -54,7 +54,9 @@ RUN service postgresql start \
   && su postgres -c "psql -c \"CREATE USER cloud WITH PASSWORD 'snap-cloud-password';\"" \
   && su postgres -c "psql -c \"ALTER USER cloud WITH LOGIN;\"" \
   && su postgres -c "psql -c \"CREATE DATABASE snapcloud WITH OWNER cloud;\"" \
-  && su postgres -c "psql -d snapcloud -a -f /app/cloud.sql"
+  && su postgres -c "psql -d snapcloud -a -f /app/cloud.sql" \
+  && su postgres -c "psql -d snapcloud -c \"GRANT ALL PRIVILEGES ON DATABASE snapcloud TO cloud;\"" \
+  && su postgres -c "psql -d snapcloud -a -f /app/bin/seeds.sql"
 
 ENV DATABASE_PASSWORD=password
 
@@ -68,11 +70,16 @@ RUN patch migrations.lua < migrations.patch
 RUN service postgresql start \
   && su - cloud -c "cd /app && ./bin/migrations.sh"
 
+RUN mkdir /app/store
+RUN chmod -R 0777 /app/store
+
 # env file for snap cloud
 COPY env.sh /app/.env
 # start script
 copy start.sh /app/start.sh
 
-EXPOSE 8080
+# Set port
+ENV PORT=80
+EXPOSE 80
 
 CMD ["/app/start.sh"]
