@@ -7,12 +7,9 @@ Not only is RIAC-Snap! a great tool for introducing computer science to students
 In addition to its educational value, RIAC-Snap! also has a thriving community of users who share and collaborate on projects. This provides a wealth of resources and inspiration for students and teachers to draw upon as they work on their own projects. From beginner to advanced, RIAC-Snap! offers something for everyone in the world of computer science.
 
 
+---
 
-
-
-=======
-
-#RAIC-snapCloud v0.0.1 Arm version
+# RAIC-snapCloud v0.0.1 Arm version
 
 RIAC-snapCloud is a Docker image that contains everything you need to run snapCloud within a Docker container. This makes it easy to deploy snapCloud in a variety of environments, as you can simply pull the image from the Docker registry and run it to get started.
 
