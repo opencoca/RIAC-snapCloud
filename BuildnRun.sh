@@ -1,5 +1,5 @@
 #!/bin/bash
-# Version 1.2
+# Version 1.3
 
 # Copyright (c) Startr LLC. All rights reserved.
 # This script is licensed under the GNU Affero General Public License v3.0.
@@ -13,11 +13,11 @@ PROJECTPATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # Set PROJECT to the lowercase version of the name of this directory
 PROJECT=`echo ${PROJECTPATH##*/}|awk '{print tolower($0)}'`
 # Set FULL_BRANCH to the name of the current Git branch
-FULL_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+FULL_BRANCH=`echo $(git rev-parse --abbrev-ref HEAD)|awk '{print tolower($0)}'`
 # Set BRANCH to the lowercase version of this name, with everything after the last forward slash removed
 BRANCH=${FULL_BRANCH##*/}
 # Set TAG to the output of the git describe --always --tag command, which returns a "unique identifier" for the current commit
-TAG=$(git describe --always --tag)
+TAG=`echo $(git describe --always --tag)|awk '{print tolower($0)}'`
 
 # Print the values of PROJECTPATH, PROJECT, FULL_BRANCH, and BRANCH to the console
 echo PROJECTPATH=$PROJECTPATH

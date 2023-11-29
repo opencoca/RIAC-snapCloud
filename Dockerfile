@@ -7,14 +7,40 @@ LABEL description="Snap! Cloud"
 # Non-interactive mode
 ENV DEBIAN_FRONTEND noninteractive
 
-# Install Lua and other dependencies
 RUN apt-get update
 RUN apt-get install -y lua5.1 liblua5.1-0-dev
-RUN apt-get install -y luarocks
-RUN apt-get install libssl1.1
+RUN apt-get install -y libssl1.1
+
+# Install dependencies for LuaRocks and OpenSSL
+RUN apt-get update && \
+    apt-get install -y wget build-essential unzip libreadline-dev libncurses5-dev libssl-dev lua5.1 luarocks
+
+
+# Upgrade LuaRocks
+RUN wget https://luarocks.org/releases/luarocks-3.9.2.tar.gz && \
+    tar zxpf luarocks-3.9.2.tar.gz && \
+    cd luarocks-3.9.2 && \
+    ./configure --lua-version=5.1 --versioned-rocks-dir && \
+    make && make install && \
+    cd .. && rm -rf luarocks-3.9.2.tar.gz luarocks-3.9.2
+
+# Install OpenSSL module
+RUN luarocks install openssl
+
+RUN apt-get install -y git
+RUN apt-get install -y libssl-dev
+RUN apt-get install -y build-essential
+RUN apt-get install -y authbind
+RUN apt-get install -y lsb-core
+RUN apt-get -y install --no-install-recommends wget gnupg ca-certificates
+RUN wget -O - https://openresty.org/package/pubkey.gpg | apt-key add -
+RUN echo "deb http://openresty.org/package/arm64/ubuntu $(lsb_release -sc) main" > openresty.list
+RUN cp openresty.list /etc/apt/sources.list.d/
+RUN apt-get update
+RUN apt-get -y install --no-install-recommends openresty
 
 # Install PostgreSQL and other dependencies
-RUN apt-get install -y postgresql  postgresql-client postgresql-contrib
+RUN apt-get install -y postgresql postgresql-client postgresql-contrib
 RUN apt-get install -y git
 RUN apt-get install -y libssl-dev
 RUN apt-get install -y build-essential
